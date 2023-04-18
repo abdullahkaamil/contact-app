@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\Business;
+//use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PersonController extends Controller
@@ -12,9 +14,7 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $people = Person::all();
-
-        return view('person.index')->with('people', $people);
+        return view('person.index')->with('people',Person::paginate(10));
     }
 
     /**
@@ -23,6 +23,9 @@ class PersonController extends Controller
     public function create()
     {
         //
+        return view('person.create')->with(['businesses'=>Business::all(),
+//                                            'tags' => Tag::all()
+        ]);
     }
 
     /**
@@ -30,7 +33,23 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'nullable|email'
+        ]);
+
+        $person = new Person;
+        $person->firstname = $request->input('firstname');
+        $person->lastname = $request->input('lastname');
+        $person->email = $request->input('email');
+        $person->phone = $request->input('phone');
+        $person->business_id = $request->input('business_id');
+        $person->save();
+
+        $person->tags()->sync($request->input('tags'));
+
+        return redirect(route('person.index'));
     }
 
     /**
@@ -38,7 +57,7 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
-        //
+        return view('person.detail')->with('person',$person);
     }
 
     /**
@@ -47,6 +66,9 @@ class PersonController extends Controller
     public function edit(Person $person)
     {
         //
+        return view('person.edit')->with(['person' => $person,'businesses' => Business::all(),
+//                                          'tags' => Tag::all()
+        ]);
     }
 
     /**
@@ -54,7 +76,23 @@ class PersonController extends Controller
      */
     public function update(Request $request, Person $person)
     {
-        //
+
+        $validated = $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'nullable|email'
+        ]);
+
+        $person->firstname = $request->input('firstname');
+        $person->lastname = $request->input('lastname');
+        $person->email = $request->input('email');
+        $person->phone = $request->input('phone');
+        $person->business_id = $request->input('business_id');
+        $person->save();
+
+//        $person->tags()->sync($request->input('tags'));
+
+        return redirect(route('person.index'));
     }
 
     /**
@@ -63,5 +101,9 @@ class PersonController extends Controller
     public function destroy(Person $person)
     {
         //
+        $person->delete();
+
+        return redirect(route('person.index'));
+
     }
 }
