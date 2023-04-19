@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <h3 class="font-semibold pb-5">Add a new person</h3>
+                   <h3 class="font-semibold pb-5">Add a new person</h3>
 
                     <form action="{{route('person.store')}}" method="POST">
                         @csrf
@@ -47,12 +47,12 @@
 
                         <h4 class="font-semibold pt-5">Tags</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-12 gap-x-6 gap-y-6">
-{{--                            @foreach ($tags as $tag)--}}
-{{--                                <span class="sm:col-span-2">--}}
-{{--                                    <input type="checkbox" id="tag{{$tag->id}}" name="tags[]" value="{{$tag->id}}">--}}
-{{--                                    <label for="tag{{$tag->id}}"> {{$tag->tag_name}}</label>--}}
-{{--                                </span>--}}
-{{--                            @endforeach--}}
+                            @foreach ($tags as $tag)
+                                <span class="sm:col-span-2">
+                                    <input type="checkbox" id="tag{{$tag->id}}" name="tags[]" value="{{$tag->id}}">
+                                    <label for="tag{{$tag->id}}"> {{$tag->tag_name}}</label>
+                                </span>
+                            @endforeach
                         </div>
 
                         <div class="mt-6 flex items-center justify-end gap-x-6">
